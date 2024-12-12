@@ -247,7 +247,7 @@ public class    LoginView extends javax.swing.JFrame {
 
         private void staffCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_staffCheckBoxActionPerformed
                 // TODO add your handling code here:
-        }//GEN-LAST:event_staffCheckBoxActionPerformed
+        }
 
 	/**
 	 * @param args the command line arguments
@@ -274,9 +274,7 @@ public class    LoginView extends javax.swing.JFrame {
 		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
 			java.util.logging.Logger.getLogger(LoginView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		}
-		//</editor-fold>
 
-		/* Create and display the form */
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				new LoginView().setVisible(true);
