@@ -282,7 +282,7 @@ public class    LoginView extends javax.swing.JFrame {
 		});
 	}
 
-        // Variables declaration - do not modify//GEN-BEGIN:variables
+
         private javax.swing.JPanel LoginPanel;
         private javax.swing.JLabel backgroundIconLabel;
         private javax.swing.JLabel dhaLabel;
