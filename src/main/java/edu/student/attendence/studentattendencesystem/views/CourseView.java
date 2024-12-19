@@ -4,6 +4,7 @@
  */
 package edu.student.attendence.studentattendencesystem.views;
 
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.*;
@@ -41,6 +42,7 @@ public class CourseView extends javax.swing.JFrame {
         // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
         private void initComponents() {
 
+                courseTableModel = new DefaultTableModel();
                 jMenuBar1 = new javax.swing.JMenuBar();
                 jMenu1 = new javax.swing.JMenu();
                 jMenu2 = new javax.swing.JMenu();
@@ -371,6 +373,7 @@ public class CourseView extends javax.swing.JFrame {
                         new String [] {
                                 "No", "Course Code", "Course Name", "Group(s)", "A", "B", "C", "D", "E"
                         }
+
                 ) {
                         Class[] types = new Class [] {
                                 java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
@@ -380,6 +383,44 @@ public class CourseView extends javax.swing.JFrame {
                                 return types [columnIndex];
                         }
                 });
+
+               String  courseTableQuery = "SELECT SAS.Students.StudentID, SAS.Students.FirstName, SAS.Students.LastName, SAS.Courses.CourseName, SAS.`Groups`.GroupName from SAS.Students INNER JOIN SAS.Enrollments on SAS.Students.StudentID = SAS.Enrollments.StudentID INNER JOIN SAS.Courses ON SAS.Enrollments.CourseCode = SAS.Courses.CourseCode INNER JOIN SAS.`Groups` ON SAS.Courses.CourseCode = SAS.`Groups`.CourseCode";
+
+        try(Connection con = DriverManager.getConnection(url,username,password);
+            PreparedStatement retrieve = con.prepareStatement(courseTableQuery)) {
+
+            ResultSet resultSet = retrieve.executeQuery();
+
+            int rows = 0;
+            while(resultSet.next()){
+                int StudentID = resultSet.getInt("StudentID");
+                String firstName = resultSet.getString("FirstName");
+                String lastName = resultSet.getString("LastName");
+                String courseName = resultSet.getString("CourseName");
+                String groupName = resultSet.getString("GroupName");
+
+                Object[] studentDetails = {StudentID, firstName, lastName, courseName,groupName};
+
+                courseTableModel = (DefaultTableModel) jTable1.getModel();
+
+                if(rows < courseTableModel.getRowCount()){
+                    for(int col = 0; col < 5; col++){
+                        courseTableModel.setValueAt(studentDetails[col], rows, col);
+                    }
+                }else {
+                    courseTableModel.addRow(studentDetails);
+                }
+                rows++;
+
+
+            }
+
+
+        }catch (SQLException e){
+            Logger.getLogger(LoginView.class.getName()).log(Level.SEVERE, null, e);
+            showMessageDialog(this, "Error retrieve data: " + e.getMessage());
+
+        }
                 jScrollPane1.setViewportView(jTable1);
                 if (jTable1.getColumnModel().getColumnCount() > 0) {
                         jTable1.getColumnModel().getColumn(0).setPreferredWidth(1);
@@ -763,5 +804,6 @@ public class CourseView extends javax.swing.JFrame {
         private javax.swing.JLabel usernameTitleLabel;
         private javax.swing.JPanel usernameTitlePanel;
         private javax.swing.JMenu viewMenu;
+        private DefaultTableModel courseTableModel;
         // End of variables declaration//GEN-END:variables
 }
